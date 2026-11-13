@@ -1,6 +1,6 @@
-# EventPulse — Real-Time Audience Feedback & AI Analytics Platform
+# Live Review — Real-Time Audience Feedback & AI Analytics Platform
 
-**EventPulse** is a cross-platform Flutter application integrated with a **Django REST Framework (DRF)** backend and **PostgreSQL 18** database. It provides real-time audience feedback, AI sentiment analytics (Bangla & Banglish NLP), automated speaker certificates, and emergency venue/sound alert monitoring.
+**Live Review** is a cross-platform Flutter application integrated with a **Django REST Framework (DRF)** backend and **PostgreSQL 18** database. It provides real-time audience feedback, AI sentiment analytics (Bangla & Banglish NLP), automated speaker certificates, and emergency venue/sound alert monitoring.
 
 ---
 
@@ -8,7 +8,7 @@
 
 * **Frontend:** Flutter (Dart) — Cross-platform Android / Web / Desktop UI
 * **Backend API:** Django REST Framework (DRF) — Python RESTful API
-* **Database:** PostgreSQL 18 (`eventpulse_db`) — Relational Production Database
+* **Database:** PostgreSQL 18 (`livereview_db`) — Relational Production Database
 * **AI / NLP Engine:** Bangla & Banglish Natural Language Processing (NLP) Sentiment Classifier
 * **Security:** Anti-Spam Device & Session Token Verification Lock
 
@@ -28,7 +28,7 @@ python manage.py runserver 8000
 ```
 
 * **Django REST API Base URL:** `http://127.0.0.1:8000/api/`
-* **Django Admin Panel:** `http://127.0.0.1:8000/admin/` (User: `admin` | Pass: `admin`)
+* **Django Admin Panel:** `http://127.0.0.1:8000/admin/`
 
 ---
 

@@ -225,7 +225,7 @@ class SpeakerCertificateDialog extends StatelessWidget {
                   Icon(Icons.verified_rounded, color: Color(0xFF34D399), size: 16),
                   SizedBox(width: 6),
                   Text(
-                    'OFFICIALLY VERIFIED BY EVENTPULSE AI ENGINE',
+                    'OFFICIALLY VERIFIED BY LIVE REVIEW AI ENGINE',
                     style: TextStyle(
                       color: Color(0xFF34D399),
                       fontSize: 10,

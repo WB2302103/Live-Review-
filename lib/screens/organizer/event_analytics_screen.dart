@@ -179,7 +179,7 @@ class _EventAnalyticsScreenState extends State<EventAnalyticsScreen>
                             ),
                             const SizedBox(width: 6),
                             const Text(
-                              'EVENTPULSE AI REPORT',
+                              'LIVE REVIEW AI REPORT',
                               style: TextStyle(
                                 color: Color(0xFF34D399),
                                 fontSize: 11,
