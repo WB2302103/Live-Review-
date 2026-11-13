@@ -14,67 +14,7 @@ class MockDataService {
   final Set<String> _submittedEventIds = {};
 
   void _seedInitialEvents() {
-    if (events.isEmpty) {
-      events.addAll([
-        Event(
-          id: 'E_101',
-          title: 'Flutter & AI National Tech Summit 2026',
-          description: 'Explore the future of mobile development with Flutter, Artificial Intelligence, and Cloud Architecture.',
-          venue: 'IIUC Central Auditorium',
-          dateTime: 'Today, 10:00 AM',
-          organizerName: 'DevDynamos & IIUC',
-          qrCodeToken: 'qr_101',
-          status: 'live',
-        ),
-        Event(
-          id: 'E_102',
-          title: 'UI/UX & Mobile App Architecture Workshop',
-          description: 'Hands-on masterclass on building responsive, scalable mobile applications.',
-          venue: 'Lab 304, CSE Dept',
-          dateTime: 'Today, 02:30 PM',
-          organizerName: 'IEEE Student Branch',
-          qrCodeToken: 'qr_102',
-          status: 'live',
-        ),
-        Event(
-          id: 'E_103',
-          title: 'Youth Marketing Club Idea Thrive 2026',
-          description: 'National innovation and idea competition for tech entrepreneurs.',
-          venue: 'Main Conference Hall',
-          dateTime: 'Tomorrow, 09:00 AM',
-          organizerName: 'Youth Marketing Club',
-          qrCodeToken: 'qr_103',
-          status: 'upcoming',
-        ),
-      ]);
-
-      feedbacks.addAll([
-        FeedbackItem(
-          id: 'F_101',
-          eventId: 'E_101',
-          overallRating: 4.8,
-          speakerRating: 4.9,
-          contentRating: 4.8,
-          venueRating: 4.7,
-          comment: 'Presentation khub valo chilo kintu sound system problem chilo',
-          submittedAt: DateTime.now().subtract(const Duration(minutes: 10)),
-          sentiment: 'Positive',
-          keyIssues: ['Engaging Content', 'Speaker Quality'],
-        ),
-        FeedbackItem(
-          id: 'F_102',
-          eventId: 'E_101',
-          overallRating: 4.0,
-          speakerRating: 4.5,
-          contentRating: 4.2,
-          venueRating: 2.0,
-          comment: 'The speaker was amazing but AC was not working in the room',
-          submittedAt: DateTime.now().subtract(const Duration(minutes: 5)),
-          sentiment: 'Positive',
-          keyIssues: ['Venue & Facilities'],
-        ),
-      ]);
-    }
+    // Clean initial state with no dummy sample events
   }
 
   bool isEventSubmitted(String eventId) {
