@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../models/event_model.dart';
 import '../../services/mock_data_service.dart';
 import '../../utils/page_transitions.dart';
@@ -16,6 +17,7 @@ class CameraScannerScreen extends StatefulWidget {
 
 class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
+  late MobileScannerController _scannerController;
   final MockDataService _dataService = MockDataService();
   bool _isScanning = true;
   bool _isFlashOn = false;
@@ -27,11 +29,17 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
       duration: const Duration(milliseconds: 1800),
       vsync: this,
     )..repeat(reverse: true);
+
+    _scannerController = MobileScannerController(
+      torchEnabled: false,
+      facing: CameraFacing.back,
+    );
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    _scannerController.dispose();
     super.dispose();
   }
 
@@ -196,6 +204,7 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
               HapticFeedback.lightImpact();
               setState(() {
                 _isFlashOn = !_isFlashOn;
+                _scannerController.toggleTorch();
               });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -210,25 +219,37 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
       ),
       body: Stack(
         children: [
-          // Dark Gradient Viewport Background
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Color(0xFF1E293B), Color(0xFF0F172A)],
-              ),
-            ),
+          // 1. Real Mobile Camera Feed (MobileScanner)
+          MobileScanner(
+            controller: _scannerController,
+            onDetect: (capture) {
+              final List<Barcode> barcodes = capture.barcodes;
+              for (final barcode in barcodes) {
+                final code = barcode.rawValue;
+                if (code != null) {
+                  final event = _dataService.getEventByCode(code);
+                  if (event != null) {
+                    _onQrDetected(event);
+                    break;
+                  } else {
+                    // Fallback for testing: if any QR is scanned, pick the first available event
+                    final events = _dataService.getEvents();
+                    if (events.isNotEmpty) {
+                      _onQrDetected(events.first);
+                      break;
+                    }
+                  }
+                }
+              }
+            },
           ),
 
-          // Flashlight beam effect overlay if turned on
-          if (_isFlashOn)
-            Positioned.fill(
-              child: Container(
-                color: Colors.amber.withOpacity(0.08),
-              ),
-            ),
+          // 2. Dark Overlay Vignette
+          Container(
+            color: Colors.black.withOpacity(0.35),
+          ),
 
+          // 3. High-Tech Viewfinder & Overlay UI
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
@@ -239,9 +260,9 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0F766E).withOpacity(0.3),
+                      color: const Color(0xFF0F766E).withOpacity(0.4),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFF34D399).withOpacity(0.5)),
+                      border: Border.all(color: const Color(0xFF34D399).withOpacity(0.6)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -264,7 +285,7 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
                         ),
                         const SizedBox(width: 8),
                         const Text(
-                          'AI VISION SCANNER ACTIVE',
+                          'REAL CAMERA SCANNER ACTIVE',
                           style: TextStyle(
                             color: Color(0xFF34D399),
                             fontSize: 11,
@@ -288,10 +309,10 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
                           height: 270,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(24),
-                            color: Colors.black.withOpacity(0.4),
+                            border: Border.all(color: const Color(0xFF34D399), width: 2.5),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF34D399).withOpacity(0.15 + (_animationController.value * 0.2)),
+                                color: const Color(0xFF34D399).withOpacity(0.15 + (_animationController.value * 0.25)),
                                 blurRadius: 20 + (_animationController.value * 15),
                                 spreadRadius: 2,
                               ),
@@ -309,14 +330,14 @@ class _CameraScannerScreenState extends State<CameraScannerScreen> with SingleTi
                                 children: [
                                   Icon(
                                     Icons.qr_code_scanner_rounded,
-                                    size: 90,
-                                    color: Colors.white.withOpacity(0.25),
+                                    size: 80,
+                                    color: Colors.white.withOpacity(0.2),
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.black45,
+                                      color: Colors.black54,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: const Text(

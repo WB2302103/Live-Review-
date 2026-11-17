@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../../models/event_model.dart';
 import '../../models/feedback_model.dart';
 import '../../services/mock_data_service.dart';
+import '../../services/api_service.dart';
 import '../../utils/page_transitions.dart';
 import '../../utils/language_manager.dart';
 import 'success_screen.dart';
@@ -126,6 +127,9 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
 
     _dataService.addFeedback(feedback);
     _dataService.markEventSubmitted(widget.event.id);
+
+    // Send Feedback to Django Backend & PostgreSQL Database
+    ApiService().submitFeedback(feedback, 'client_token_${widget.event.id}');
 
     Navigator.pushReplacement(
       context,
@@ -447,7 +451,7 @@ class _FeedbackFormScreenState extends State<FeedbackFormScreen> {
                 ),
               ),
 
-              const SizedBox(height: 28),
+              const SizedBox(height: 25),
 
               // --- Submit Action Button ---
               ElevatedButton(
